@@ -15,6 +15,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -43,7 +44,7 @@ public class ViewUtil implements VideoRendererEventListener {
     public static void initIjkVideoView(IjkVideoView ijkVideoView ){
         ijkVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
     }
-    public static void initExoPlayer(PlayerView simpleExoPlayerView) {
+    public static void initExoPlayer(PlayerView simpleExoPlayerView,boolean useController) {
 ////VIDEO FROM SD CARD: (2 steps. set up file and path, then change videoSource to get the file)
 ////        String urimp4 = "path/FileName.mp4"; //upload file to device and add path/name.mp4
 ////        Uri mp4VideoUri = Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath()+urimp4);
@@ -52,7 +53,7 @@ public class ViewUtil implements VideoRendererEventListener {
         int w = simpleExoPlayerView.getResources().getConfiguration().screenWidthDp;
         Log.v(TAG, "height : " + h + " weight: " + w);
         ////Set media controller
-        simpleExoPlayerView.setUseController(false);//set to true or false to see controllers
+        simpleExoPlayerView.setUseController(useController);//set to true or false to see controllers
         simpleExoPlayerView.requestFocus();
         // Bind the player to the view.
         // Measures bandwidth during playback. Can be null if not required.
@@ -83,7 +84,7 @@ public class ViewUtil implements VideoRendererEventListener {
         //        MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
 
         //FOR LIVESTREAM LINK:
-        MediaSource videoSource = new HlsMediaSource(mp4VideoUri, dataSourceFactory, 1, null, null);
+        MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mp4VideoUri);
         final LoopingMediaSource loopingSource = new LoopingMediaSource(videoSource);
         // Prepare the player with the source.
         player.prepare(videoSource);

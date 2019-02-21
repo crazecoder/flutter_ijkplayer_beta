@@ -34,7 +34,7 @@ public class VideoPlayActivity extends Activity {
         if (UrlUtil.isUseExoPlayer(url)) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             ijkVideoView.setVisibility(View.GONE);
-            ViewUtil.initExoPlayer(simpleExoPlayerView);
+            ViewUtil.initExoPlayer(simpleExoPlayerView,true);
             simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true));
         } else {
             ijkVideoView.setVisibility(View.VISIBLE);

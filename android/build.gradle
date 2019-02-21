@@ -44,5 +44,5 @@ dependencies {
 //    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
 
     implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.3'
+    implementation project(':exoplayer_all')
 }

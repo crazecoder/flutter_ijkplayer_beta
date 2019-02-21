@@ -53,7 +53,7 @@ public class IJKPlayerFactory extends PlatformViewFactory {
                     if (url.endsWith("m3u8")) {
                         simpleExoPlayerView = new PlayerView(context);
                         simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(context,url,autoPlay));
-                        ViewUtil.initExoPlayer(simpleExoPlayerView);
+                        ViewUtil.initExoPlayer(simpleExoPlayerView,false);
                         return simpleExoPlayerView;
                     } else {
                         ijkVideoView.setVideoURI(Uri.parse(url));
