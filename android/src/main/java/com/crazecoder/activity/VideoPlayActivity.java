@@ -2,6 +2,7 @@ package com.crazecoder.activity;
 
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ public class VideoPlayActivity extends Activity {
             ijkVideoView.setVisibility(View.VISIBLE);
             simpleExoPlayerView.setVisibility(View.GONE);
             ViewUtil.initIjkVideoView(ijkVideoView);
+            ijkVideoView.setVideoURI(Uri.parse(url));
             ijkVideoView.start();
         }
     }
