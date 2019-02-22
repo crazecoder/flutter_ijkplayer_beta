@@ -39,8 +39,6 @@ public class IJKPlayerFactory extends PlatformViewFactory {
             public View getView() {
                 boolean autoPlay = false;
                 Map<String, Object> map = (Map<String, Object>) param;
-                ijkVideoView = new IjkVideoView(context);
-                ViewUtil.initIjkVideoView(ijkVideoView);
                 String url = null;
                 if (map != null && map.containsKey("url")) {
                     url = map.get("url").toString();
@@ -56,6 +54,8 @@ public class IJKPlayerFactory extends PlatformViewFactory {
                         ViewUtil.initExoPlayer(simpleExoPlayerView,false);
                         return simpleExoPlayerView;
                     } else {
+                        ijkVideoView = new IjkVideoView(context);
+                        ViewUtil.initIjkVideoView(ijkVideoView);
                         ijkVideoView.setVideoURI(Uri.parse(url));
                         if (autoPlay) ijkVideoView.start();
                         return ijkVideoView;

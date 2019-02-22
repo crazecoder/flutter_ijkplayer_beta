@@ -35,7 +35,7 @@ public class VideoPlayActivity extends Activity {
         if (UrlUtil.isUseExoPlayer(url)) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             ijkVideoView.setVisibility(View.GONE);
-            ViewUtil.initExoPlayer(simpleExoPlayerView,true);
+            ViewUtil.initExoPlayer(simpleExoPlayerView, true);
             simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true));
         } else {
             ijkVideoView.setVisibility(View.VISIBLE);
@@ -48,8 +48,10 @@ public class VideoPlayActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        ijkVideoView.release(true);
-        simpleExoPlayerView.getPlayer().release();
+        if (ijkVideoView != null)
+            ijkVideoView.release(true);
+        if (simpleExoPlayerView != null)
+            simpleExoPlayerView.getPlayer().release();
         super.onDestroy();
     }
 }
