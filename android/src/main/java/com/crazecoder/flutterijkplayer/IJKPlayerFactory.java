@@ -38,6 +38,7 @@ public class IJKPlayerFactory extends PlatformViewFactory {
             @Override
             public View getView() {
                 boolean autoPlay = false;
+                long previewMills = 0;
                 Map<String, Object> map = (Map<String, Object>) param;
                 String url = null;
                 if (map != null && map.containsKey("url")) {
@@ -45,17 +46,20 @@ public class IJKPlayerFactory extends PlatformViewFactory {
                     if (map.containsKey("autoPlay")) {
                         autoPlay = (boolean) map.get("autoPlay");
                     }
+                    if (map.containsKey("previewMills")) {
+                        previewMills = (int) map.get("previewMills");
+                    }
                 }
                 Log.d("IJKPlayerFactory", url);
                 if (url != null) {
                     if (url.endsWith("m3u8")) {
                         simpleExoPlayerView = new PlayerView(context);
-                        simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(context,url,autoPlay));
+                        simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(context,url,autoPlay,previewMills));
                         ViewUtil.initExoPlayer(simpleExoPlayerView,false);
                         return simpleExoPlayerView;
                     } else {
                         ijkVideoView = new IjkVideoView(context);
-                        ViewUtil.initIjkVideoView(ijkVideoView);
+                        ViewUtil.initIjkVideoView(ijkVideoView,previewMills);
                         ijkVideoView.setVideoURI(Uri.parse(url));
                         if (autoPlay) ijkVideoView.start();
                         return ijkVideoView;

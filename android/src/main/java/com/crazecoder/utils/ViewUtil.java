@@ -2,6 +2,8 @@ package com.crazecoder.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
 
@@ -15,7 +17,6 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -30,7 +31,12 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+
+import java.util.TimerTask;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  * Note of this class.
@@ -41,10 +47,36 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 public class ViewUtil implements VideoRendererEventListener {
     private static final String TAG = "initExoPlayer";
 
-    public static void initIjkVideoView(IjkVideoView ijkVideoView ){
+    public static void initIjkVideoView(final IjkVideoView ijkVideoView, final long timemills) {
         ijkVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
+        if (timemills != 0){
+            final Handler handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    ijkVideoView.pause();
+                }
+            };
+            ijkVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(IMediaPlayer iMediaPlayer) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(timemills);
+                                handler.sendEmptyMessage(0);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
+
     }
-    public static void initExoPlayer(PlayerView simpleExoPlayerView,boolean useController) {
+
+    public static void initExoPlayer(PlayerView simpleExoPlayerView, boolean useController) {
 ////VIDEO FROM SD CARD: (2 steps. set up file and path, then change videoSource to get the file)
 ////        String urimp4 = "path/FileName.mp4"; //upload file to device and add path/name.mp4
 ////        Uri mp4VideoUri = Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath()+urimp4);
@@ -60,7 +92,8 @@ public class ViewUtil implements VideoRendererEventListener {
         // Produces DataSource instances through which media data is loaded.
 
     }
-    public static SimpleExoPlayer getSimpleExoPlayer(Context context,String url,boolean auto){
+
+    public static SimpleExoPlayer getSimpleExoPlayer(Context context, String url, boolean auto, final long timemills) {
         Uri mp4VideoUri = Uri.parse(url); //ABC NEWS
 
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter(); //test
@@ -68,7 +101,7 @@ public class ViewUtil implements VideoRendererEventListener {
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, ""), bandwidthMeter);
         // This is the MediaSource representing the media to be played.
 //        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(liveStreamUri);
@@ -88,18 +121,15 @@ public class ViewUtil implements VideoRendererEventListener {
         final LoopingMediaSource loopingSource = new LoopingMediaSource(videoSource);
         // Prepare the player with the source.
         player.prepare(videoSource);
-        final SimpleExoPlayer finalPlayer = player;
         player.addListener(new ExoPlayer.EventListener() {
 
 
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                Log.v(TAG, "Listener-onTracksChanged... ");
             }
 
             @Override
@@ -125,9 +155,9 @@ public class ViewUtil implements VideoRendererEventListener {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 Log.v(TAG, "Listener-onPlayerError...");
-                finalPlayer.stop();
-                finalPlayer.prepare(loopingSource);
-                finalPlayer.setPlayWhenReady(true);
+                player.stop();
+                player.prepare(loopingSource);
+                player.setPlayWhenReady(true);
             }
 
             @Override
@@ -146,8 +176,32 @@ public class ViewUtil implements VideoRendererEventListener {
             }
         });
         player.setPlayWhenReady(auto); //run file/link when ready to play.
-        //        player.setVideoDebugListener(this);
 
+        //        player.setVideoDebugListener(this);
+        if (timemills != 0){
+            final Handler handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    player.stop();
+                }
+            };
+            player.addVideoListener(new VideoListener() {
+                @Override
+                public void onRenderedFirstFrame() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(timemills);
+                                handler.sendEmptyMessage(0);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
         return player;
     }
 

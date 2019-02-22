@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
-const MethodChannel _channel = const MethodChannel('crazecoder/flutter_ijkplayer');
+const MethodChannel _channel =
+    const MethodChannel('crazecoder/flutter_ijkplayer');
 
 Future<Null> play({@required String url, String title, bool cache}) async {
   Map<String, Object> map = {
@@ -17,12 +18,16 @@ Future<Null> play({@required String url, String title, bool cache}) async {
   );
 }
 
-
 class FlutterIjkplayer extends StatefulWidget {
   final String url;
   final bool autoPlay;
+  final int previewMills;
 
-  FlutterIjkplayer({this.url, this.autoPlay = false});
+  FlutterIjkplayer({
+    this.url,
+    this.autoPlay: false,
+    this.previewMills: 0,
+  });
 
   @override
   State<StatefulWidget> createState() => _FlutterIjkplayerState();
@@ -38,6 +43,7 @@ class _FlutterIjkplayerState extends State<FlutterIjkplayer> {
       creationParams: {
         "url": widget.url,
         "autoPlay": widget.autoPlay,
+        "previewMills": widget.previewMills,
       },
     );
   }

@@ -4,7 +4,6 @@ package com.crazecoder.activity;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,11 +35,11 @@ public class VideoPlayActivity extends Activity {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             ijkVideoView.setVisibility(View.GONE);
             ViewUtil.initExoPlayer(simpleExoPlayerView, true);
-            simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true));
+            simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true,0));
         } else {
             ijkVideoView.setVisibility(View.VISIBLE);
             simpleExoPlayerView.setVisibility(View.GONE);
-            ViewUtil.initIjkVideoView(ijkVideoView);
+            ViewUtil.initIjkVideoView(ijkVideoView,0);
             ijkVideoView.setVideoURI(Uri.parse(url));
             ijkVideoView.start();
         }
