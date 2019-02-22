@@ -31,6 +31,12 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -44,5 +50,10 @@ dependencies {
 //    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
 
     implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
-    implementation project(':exoplayer_all')
+    implementation (name:'library-core-release', ext:'aar')
+    implementation (name:'library-dash-release', ext:'aar')
+    implementation (name:'library-hls-release', ext:'aar')
+    implementation (name:'library-smoothstreaming-release', ext:'aar')
+    implementation (name:'library-ui-release', ext:'aar')
+
 }

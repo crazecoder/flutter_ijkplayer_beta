@@ -43,4 +43,11 @@ public class VideoPlayActivity extends Activity {
             ijkVideoView.start();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        ijkVideoView.release(true);
+        simpleExoPlayerView.getPlayer().release();
+        super.onDestroy();
+    }
 }
