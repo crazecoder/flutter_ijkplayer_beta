@@ -35,11 +35,11 @@ public class VideoPlayActivity extends Activity {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             ijkVideoView.setVisibility(View.GONE);
             ViewUtil.initExoPlayer(simpleExoPlayerView, true);
-            simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true,0));
+            simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(this, url, true,true,0));
         } else {
             ijkVideoView.setVisibility(View.VISIBLE);
             simpleExoPlayerView.setVisibility(View.GONE);
-            ViewUtil.initIjkVideoView(ijkVideoView,0);
+            ViewUtil.initIjkVideoView(ijkVideoView,0,true);
             ijkVideoView.setVideoURI(Uri.parse(url));
             ijkVideoView.start();
         }
