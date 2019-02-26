@@ -47,10 +47,10 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 public class ViewUtil implements VideoRendererEventListener {
     private static final String TAG = "initExoPlayer";
 
-    public static void initIjkVideoView(final IjkVideoView ijkVideoView, final long timemills) {
+    public static void initIjkVideoView(final IjkVideoView ijkVideoView, final long timemills, final boolean autoVoice) {
         ijkVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
-        if (timemills != 0){
-            final Handler handler = new Handler(){
+        if (timemills != 0) {
+            final Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
                     ijkVideoView.pause();
@@ -59,6 +59,8 @@ public class ViewUtil implements VideoRendererEventListener {
             ijkVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(IMediaPlayer iMediaPlayer) {
+                    if (!autoVoice)
+                        iMediaPlayer.setVolume(0, 0);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -93,7 +95,7 @@ public class ViewUtil implements VideoRendererEventListener {
 
     }
 
-    public static SimpleExoPlayer getSimpleExoPlayer(Context context, String url, boolean auto, final long timemills) {
+    public static SimpleExoPlayer getSimpleExoPlayer(Context context, String url, boolean auto, boolean autoVoice, final long timemills) {
         Uri mp4VideoUri = Uri.parse(url); //ABC NEWS
 
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter(); //test
@@ -121,6 +123,8 @@ public class ViewUtil implements VideoRendererEventListener {
         final LoopingMediaSource loopingSource = new LoopingMediaSource(videoSource);
         // Prepare the player with the source.
         player.prepare(videoSource);
+        if (!autoVoice)
+            player.setVolume(0f);
         player.addListener(new ExoPlayer.EventListener() {
 
 
@@ -178,8 +182,8 @@ public class ViewUtil implements VideoRendererEventListener {
         player.setPlayWhenReady(auto); //run file/link when ready to play.
 
         //        player.setVideoDebugListener(this);
-        if (timemills != 0){
-            final Handler handler = new Handler(){
+        if (timemills != 0) {
+            final Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
                     player.stop();

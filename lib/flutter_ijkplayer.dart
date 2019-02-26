@@ -21,11 +21,13 @@ Future<Null> play({@required String url, String title, bool cache}) async {
 class FlutterIjkplayer extends StatefulWidget {
   final String url;
   final bool autoPlay;
+  final bool autoSound;
   final int previewMills;
 
   FlutterIjkplayer({
     this.url,
     this.autoPlay: false,
+    this.autoSound: false,
     this.previewMills: 0,
   });
 
@@ -43,6 +45,7 @@ class _FlutterIjkplayerState extends State<FlutterIjkplayer> {
       creationParams: {
         "url": widget.url,
         "autoPlay": widget.autoPlay,
+        "autoSound": widget.autoSound,
         "previewMills": widget.previewMills,
       },
     );
