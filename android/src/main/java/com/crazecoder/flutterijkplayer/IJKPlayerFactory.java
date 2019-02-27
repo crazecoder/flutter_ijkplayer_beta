@@ -58,12 +58,12 @@ public class IJKPlayerFactory extends PlatformViewFactory {
                 if (url != null) {
                     if (url.endsWith("m3u8")) {
                         simpleExoPlayerView = new PlayerView(context);
-                        simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(context,url,autoPlay,autoSound,previewMills));
-                        ViewUtil.initExoPlayer(simpleExoPlayerView,false);
+                        simpleExoPlayerView.setPlayer(ViewUtil.getSimpleExoPlayer(context, url, autoPlay, autoSound, previewMills));
+                        ViewUtil.initExoPlayer(simpleExoPlayerView, false);
                         return simpleExoPlayerView;
                     } else {
                         ijkVideoView = new IjkVideoView(context);
-                        ViewUtil.initIjkVideoView(ijkVideoView,previewMills,autoSound);
+                        ViewUtil.initIjkVideoView(ijkVideoView, previewMills, autoSound);
                         ijkVideoView.setVideoURI(Uri.parse(url));
                         if (autoPlay) ijkVideoView.start();
                         return ijkVideoView;
@@ -76,11 +76,13 @@ public class IJKPlayerFactory extends PlatformViewFactory {
 
             @Override
             public void dispose() {
-                ijkVideoView.release(true);
+                if (ijkVideoView != null)
+                    ijkVideoView.release(true);
+                if (simpleExoPlayerView != null)
+                    simpleExoPlayerView.getPlayer().release();
             }
         };
     }
-
 
 
 }
