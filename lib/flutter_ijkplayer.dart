@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 const MethodChannel _channel =
     const MethodChannel('crazecoder/flutter_ijkplayer');
 
-Future<Null> play({@required String url, String title, bool cache}) async {
+Future<Null> play(
+    {@required String url, String title, bool cache, double radio: 0}) async {
   Map<String, Object> map = {
     "url": url,
     "cache": cache,
     "title": title,
+    "radio": radio,
   };
   await _channel.invokeMethod(
     'play',

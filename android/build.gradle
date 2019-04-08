@@ -40,7 +40,7 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
@@ -48,12 +48,10 @@ dependencies {
     implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
 //    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
-
     implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     implementation (name:'library-core-release', ext:'aar')
     implementation (name:'library-dash-release', ext:'aar')
     implementation (name:'library-hls-release', ext:'aar')
     implementation (name:'library-smoothstreaming-release', ext:'aar')
     implementation (name:'library-ui-release', ext:'aar')
-
 }
