@@ -42,7 +42,7 @@ public class FlutterIjkplayerPlugin implements MethodCallHandler {
                 intent.putExtra("cache", (Boolean) call.argument("cache"));
             if (call.hasArgument("radio") && call.argument("radio") != null) {
                 double radio = call.argument("radio");
-                intent.putExtra("landscape", radio <= 1);
+                intent.putExtra("landscape", radio > 1);
             }
             activity.startActivity(intent);
             result.success("");
