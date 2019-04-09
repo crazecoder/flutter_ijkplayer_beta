@@ -44,6 +44,10 @@ public class FlutterIjkplayerPlugin implements MethodCallHandler {
                 double radio = call.argument("radio");
                 intent.putExtra("landscape", radio > 1);
             }
+            if (call.hasArgument("exoMode") && call.argument("exoMode") != null) {
+                boolean exoMode = call.argument("exoMode");
+                intent.putExtra("exoMode", exoMode);
+            }
             activity.startActivity(intent);
             result.success("");
         } else {

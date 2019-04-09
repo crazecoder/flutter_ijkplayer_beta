@@ -38,7 +38,8 @@ public class VideoPlayActivity extends Activity {
         String url = getIntent().getStringExtra("url");
         String title = getIntent().getStringExtra("title");
         boolean cache = getIntent().getBooleanExtra("cache", true);
-        if (UrlUtil.isUseExoPlayer(url)) {
+        boolean exoMode = getIntent().getBooleanExtra("exoMode", false);
+        if (exoMode||UrlUtil.isUseExoPlayer(url)) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             ijkVideoView.setVisibility(View.GONE);
             ViewUtil.initExoPlayer(simpleExoPlayerView, true);

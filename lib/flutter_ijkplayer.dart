@@ -7,12 +7,13 @@ const MethodChannel _channel =
     const MethodChannel('crazecoder/flutter_ijkplayer');
 
 Future<Null> play(
-    {@required String url, String title, bool cache, double radio: 0}) async {
+    {@required String url, String title, bool cache,bool exoMode, double radio: 0}) async {
   Map<String, Object> map = {
     "url": url,
     "cache": cache,
     "title": title,
     "radio": radio,
+    "exoMode":exoMode,
   };
   await _channel.invokeMethod(
     'play',
